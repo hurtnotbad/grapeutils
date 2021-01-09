@@ -1,0 +1,3 @@
+include ':grapeutils'
+include ':app'
+rootProject.name = "Commonutils"
