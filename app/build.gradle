@@ -7,7 +7,7 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        applicationId "com.lammy.commonutils"
+        applicationId "com.lammy.lammyutils"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1

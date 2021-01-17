@@ -1,4 +1,4 @@
-package com.lammy.commonutils
+package com.lammy.lammyutils
 
 import org.junit.Test
 
