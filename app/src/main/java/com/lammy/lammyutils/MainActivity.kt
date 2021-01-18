@@ -2,6 +2,7 @@ package com.lammy.lammyutils
 
 import android.opengl.GLSurfaceView
 import android.os.Bundle
+import com.lammy.grapeeffect.CameraRenderer
 import com.lammy.grapeutils.effet.GrapeEffect
 import com.lammy.grapeutils.log.LogUtil
 import com.lammy.grapeutils.permission.PermissionActivity
@@ -14,7 +15,8 @@ class MainActivity : PermissionActivity() {
 //        setContentView(R.layout.activity_main)
 
         var glSurfaceView = GLSurfaceView(this)
-        var render = BitmapRender(glSurfaceView)
+//        var render = BitmapRender(glSurfaceView)
+        var render = CameraRenderer(glSurfaceView)
         setContentView(glSurfaceView)
         render.render()
     }

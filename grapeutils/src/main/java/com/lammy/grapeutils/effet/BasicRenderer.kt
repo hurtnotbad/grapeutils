@@ -16,8 +16,8 @@ open class BasicRenderer(glSurfaceView1: GLSurfaceView) : GLSurfaceView.Renderer
     init {
         glSurfaceView.setEGLContextClientVersion(2)
         glSurfaceView.setRenderer(this)
-        glSurfaceView.renderMode = RENDERMODE_WHEN_DIRTY
-//        glSurfaceView.renderMode = RENDERMODE_CONTINUOUSLY
+//        glSurfaceView.renderMode = RENDERMODE_WHEN_DIRTY
+        glSurfaceView.renderMode = RENDERMODE_CONTINUOUSLY
     }
 
     override fun onDrawFrame(gl: GL10?) {
