@@ -16,4 +16,8 @@ class NoFilter: Filter() {
         return ShaderConstant.NO_FILTER_FRAGMENT_SHADER
     }
 
+    override fun draw() {
+        printParameter(javaClass.simpleName)
+        super.draw()
+    }
 }

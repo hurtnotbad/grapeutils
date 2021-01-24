@@ -1,4 +1,4 @@
-package com.lammy.grapeutils.effet
+package com.lammy.grapeutils.effet.base
 
 import android.content.Context
 

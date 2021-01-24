@@ -1,9 +1,9 @@
-package com.lammy.grapeeffect
+package com.lammy.lammyutils
 
 import android.opengl.GLSurfaceView
-import com.lammy.grapeutils.effet.BasicRenderer
+import com.lammy.grapeutils.effet.base.BasicRenderer
 import com.lammy.grapeutils.camera.CameraInterface
-import com.lammy.grapeutils.effet.GrapeEffect
+import com.lammy.grapeutils.effet.base.GrapeEffect
 import com.lammy.grapeutils.effet.filter.*
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10

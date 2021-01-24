@@ -2,7 +2,7 @@ package com.lammy.lammyutils
 
 import android.graphics.BitmapFactory
 import android.opengl.GLSurfaceView
-import com.lammy.grapeutils.effet.BasicRenderer
+import com.lammy.grapeutils.effet.base.BasicRenderer
 import com.lammy.grapeutils.effet.common.ShaderConstant
 import com.lammy.grapeutils.effet.filter.Filter
 import com.lammy.grapeutils.effet.filter.FilterQueue
@@ -15,8 +15,8 @@ import javax.microedition.khronos.opengles.GL10
 class BitmapRender(glSurfaceView1: GLSurfaceView): BasicRenderer(glSurfaceView1) {
 
     private lateinit var filterQueue: FilterQueue
-    lateinit var filter: Filter
-    lateinit var showFilter:Filter
+    private lateinit var filter: Filter
+    private lateinit var showFilter:Filter
     override fun onDrawFrame(gl: GL10?) {
         LogUtil.e("onDrawFrame ....." )
         filterQueue.draw()

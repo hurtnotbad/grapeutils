@@ -1,7 +1,7 @@
 package com.lammy.grapeutils.effet.filter
 
 import android.graphics.BitmapFactory
-import com.lammy.grapeutils.effet.GrapeEffect
+import com.lammy.grapeutils.effet.base.GrapeEffect
 import com.lammy.grapeutils.effet.common.ShaderConstant
 import com.lammy.grapeutils.effet.common.ShaderParameter
 
@@ -60,7 +60,7 @@ class LutTableFilter: Filter() {
     override fun setParameters() {
         super.setParameters()
         setUniform1f(intensity)
-        setUniformTexture(lut,0)
+        setUniformTexture(lut,1)
     }
 
 }

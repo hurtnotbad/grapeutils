@@ -1,4 +1,4 @@
-package com.lammy.grapeutils.effet
+package com.lammy.grapeutils.effet.base
 
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
@@ -21,7 +21,6 @@ open class BasicRenderer(glSurfaceView1: GLSurfaceView) : GLSurfaceView.Renderer
     }
 
     override fun onDrawFrame(gl: GL10?) {
-        TODO("Not yet implemented")
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
@@ -32,7 +31,6 @@ open class BasicRenderer(glSurfaceView1: GLSurfaceView) : GLSurfaceView.Renderer
     }
 
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
-        TODO("Not yet implemented")
     }
 
     fun render() {

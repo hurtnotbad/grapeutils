@@ -3,9 +3,11 @@ package com.lammy.grapeutils.effet.base
 import android.graphics.Bitmap
 import android.opengl.GLES20
 import com.lammy.effect.glHelper.ShaderHelper
+import com.lammy.grapeutils.effet.common.ImageTexture
 import com.lammy.grapeutils.effet.glHelper.TextureHelper
 import com.lammy.grapeutils.effet.common.ShaderConstant
 import com.lammy.grapeutils.effet.common.ShaderParameter
+import com.lammy.grapeutils.effet.common.Texture
 import com.lammy.grapeutils.log.LogUtil
 import java.nio.FloatBuffer
 import android.opengl.GLES20.glVertexAttribPointer as glVertexAttribPointer1
@@ -23,7 +25,7 @@ abstract class Effect {
 //    protected var effectParameters = HashMap<String, ShaderParameter>()
 //    protected var textureParameters = HashMap<String, ShaderParameter>()
 
-    protected fun onCreate() {
+    open protected fun onCreate() {
         program = ShaderHelper.buildProgram(getVertexShader(), getFragmentShader())
         initParametersLocationAndTexture()
     }
@@ -40,19 +42,19 @@ abstract class Effect {
     private fun initParametersLocationAndTexture() {
         for ((key, value) in parameters) {
             when (value.type) {
-                ShaderParameter.TYPE_UNIFORM  -> value.initUniformLocation(this.program)
-                ShaderParameter.TYPE_TEXTURE  -> {
+                ShaderParameter.TYPE_UNIFORM -> value.initUniformLocation(this.program)
+                ShaderParameter.TYPE_TEXTURE -> {
                     value.initUniformLocation(this.program)
-                    if(value.value is Bitmap) {
-                        setTextureParameter(key, value.value as Bitmap)
-                    }
+//                    if (value.value is Bitmap) {
+//                        setTextureParameter(key, value.value as Bitmap)
+//                    }
                 }
                 ShaderParameter.TYPE_ATTRIBUTE -> value.initAttributeLocation(this.program)
             }
         }
     }
 
-    protected fun addParameter(name: String, value:Any?, type:Int) {
+    protected fun addParameter(name: String, value: Any?, type: Int) {
         parameters[name] = ShaderParameter(name, type)
         parameters[name]!!.value = value
     }
@@ -68,18 +70,19 @@ abstract class Effect {
     fun setParameter(name: String, value: Any) {
         parameters[name]?.value = value
     }
-    private fun setTextureParameter(name: String, value: Bitmap) {
-        val texture = IntArray(1)
-        TextureHelper.createTexture(value,texture)
-        LogUtil.e("texture = $texture[0")
-        parameters[name]?.value = texture[0]
-    }
 
     abstract fun draw()
 
-    protected abstract fun getTarget(): Int;
+    fun drawWithClear() {
+        onClear()
+        draw()
+    }
 
-    protected fun setSize(width: Int, height: Int) {
+    protected open fun getTarget(): Int {
+        return GLES20.GL_TEXTURE_2D
+    }
+
+    public fun setSize(width: Int, height: Int) {
         this.width = width
         this.height = height
     }
@@ -100,7 +103,7 @@ abstract class Effect {
         return parameters[name]?.value
     }
 
-    fun getType(name: String) :Int?{
+    fun getType(name: String): Int? {
         return parameters[name]?.type
     }
 
@@ -119,7 +122,7 @@ abstract class Effect {
         )
     }
 
-     protected fun setUniform1fv(name: String) {
+    protected fun setUniform1fv(name: String) {
         var floatArray: FloatArray = getValue(name) as FloatArray
         GLES20.glUniform1fv(getLocation(name), floatArray.size, floatArray, 0)
     }
@@ -129,15 +132,36 @@ abstract class Effect {
     }
 
     protected fun setUniformMatrix(name: String) {
-        val floatArray:FloatArray = getValue(name) as FloatArray
-        GLES20.glUniformMatrix4fv(getLocation(name), floatArray.size, false, floatArray, 0)
-     }
+        val floatArray: FloatArray = getValue(name) as FloatArray
+        GLES20.glUniformMatrix4fv(getLocation(name), 1, false, floatArray, 0)
+    }
 
-    protected fun setUniformTexture(name: String,  textureTarget:Int) {
+    protected fun setUniformTexture(name: String, textureTarget: Int) {
+        val value = getValue(name)
+        if (value is Bitmap) {
+            val texture = IntArray(1)
+            TextureHelper.createTexture(value, texture)
+            parameters[name]?.value = texture[0]
+        }
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0 + textureTarget)
         GLES20.glBindTexture(getTarget(), getValue(name) as Int)
         GLES20.glUniform1i(getLocation(name), textureTarget)
     }
+
     /******************************** setParameters()方法内使用 end******************************************/
+
+
+    private val DEBUG_SHADER = false
+    protected fun printParameter(tag: String) {
+        if (!DEBUG_SHADER) {
+            return
+        }
+        for ((key, value) in parameters) {
+            // 如果是samplerExternalOES 可能得到的location 总是-1
+            LogUtil.e("$tag: name = ${value.name} , location = ${value.location} , value = ${value.value.toString()}, type = ${value.type}")
+        }
+
+    }
+
 
 }
