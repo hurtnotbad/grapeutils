@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.lammy.grapeutils.effet.base.GrapeEffect
 import com.lammy.grapeutils.log.LogUtil
 import com.lammy.grapeutils.permission.PermissionActivity
-import com.lammy.grapeutils.test.animation.TranslateAnimationRenderTest
+import com.lammy.grapeutils.test.TranslateAnimationRenderTest
 
 class MainActivity : PermissionActivity() {
 

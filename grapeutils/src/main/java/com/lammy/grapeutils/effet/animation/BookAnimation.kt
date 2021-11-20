@@ -2,12 +2,9 @@ package com.lammy.grapeutils.effet.animation
 
 import com.lammy.grapeutils.effet.common.ShaderConstant
 
-class BookAnimation : Animation() {
-    init {
-        initParameters()
-    }
-    override fun getVertexShader(): String {
-        return """
+class BookAnimation : LYAnimation() {
+
+    override var vertexShader ="""
             attribute vec4 vPosition;
             attribute vec2 inputTextureCoordinate;
             varying vec2 textureCoordinate;
@@ -21,11 +18,8 @@ class BookAnimation : Animation() {
                 textureCoordinate = inputTextureCoordinate;
             }
         """.trimIndent()
-    }
 
-    override fun getFragmentShader(): String {
-        return ShaderConstant.NO_FILTER_FRAGMENT_SHADER
-    }
+    override var fragmentShader = ShaderConstant.NO_FILTER_FRAGMENT_SHADER
 
 
 }
