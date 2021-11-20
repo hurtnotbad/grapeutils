@@ -6,11 +6,11 @@ import com.lammy.grapeutils.effet.common.ImageTexture
 import com.lammy.grapeutils.effet.common.Texture
 import com.lammy.grapeutils.effet.glHelper.FboHelper
 import com.lammy.grapeutils.effet.glHelper.TextureHelper
-import com.lammy.grapeutils.log.LogUtil
-import java.util.*
+import java.util.ArrayList
 
-class FilterQueue(var width: Int, var height: Int) {
-    private val mFilters = ArrayList<Filter>()
+class LYFilterQueue(var width: Int, var height: Int) {
+
+    private val mFilters = ArrayList<LYFilter>()
     private val textureSize = 2
     private val frame = IntArray(1)
     private val fboTexturesArray = IntArray(textureSize)
@@ -27,11 +27,11 @@ class FilterQueue(var width: Int, var height: Int) {
         fboTextures = arrayOf( ImageTexture(fboTexturesArray[0],width,height),  ImageTexture(fboTexturesArray[1],width,height))
     }
 
-    fun addFilter(lyFilter: Filter) {
+    fun addFilter(lyFilter: LYFilter) {
         mFilters.add(lyFilter)
     }
 
-    fun removeFilter(filter: Filter) {
+    fun removeFilter(filter: LYFilter) {
         mFilters.remove(filter)
     }
 
@@ -46,14 +46,9 @@ class FilterQueue(var width: Int, var height: Int) {
             for (filter in mFilters) {
                 FboHelper.bindFbo(fboTextures[textureIndex % 2].textureId, frame[0])
                 if (textureIndex == 0) {
-                    if( filter.getValue(Filter.inTextureString) is Bitmap){
-                        val texture = IntArray(1)
-                        TextureHelper.createTexture(filter.getValue(Filter.inTextureString) as Bitmap,texture)
-                        filter.setParameter(Filter.inTextureString , ImageTexture(texture[0],width,height))
-                    }
-                    inTexture = (filter.getValue(Filter.inTextureString) as ImageTexture)
+                    inTexture = filter.getInTexture()
                 } else {
-                    filter.setParameter(Filter.inTextureString, fboTextures[(textureIndex - 1) % 2])
+                    filter.setInTexture(fboTextures[(textureIndex - 1) % 2])
                 }
                 filter.draw()
                 FboHelper.unBindFbo()

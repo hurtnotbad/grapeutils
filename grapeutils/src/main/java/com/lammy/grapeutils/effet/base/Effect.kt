@@ -4,9 +4,8 @@ import android.graphics.Bitmap
 import android.opengl.GLES20
 import com.lammy.effect.glHelper.ShaderHelper
 import com.lammy.grapeutils.effet.common.ImageTexture
-import com.lammy.grapeutils.effet.glHelper.TextureHelper
 import com.lammy.grapeutils.effet.common.ShaderConstant
-import com.lammy.grapeutils.effet.common.ShaderParameter
+import com.lammy.grapeutils.effet.common.ShaderParameter2
 import com.lammy.grapeutils.effet.common.Texture
 import com.lammy.grapeutils.log.LogUtil
 import java.nio.FloatBuffer
@@ -17,7 +16,7 @@ abstract class Effect {
     protected var width: Int = 0
     protected var height: Int = 0
     protected var program: Int = ShaderConstant.INVALID_PROGRAM
-    protected var parameters = HashMap<String, ShaderParameter>()
+    protected var parameters = HashMap<String, ShaderParameter2>()
 
 //    // shader 以模板load 的时候，需要四个分开
 //    protected var uniformParameters = HashMap<String, ShaderParameter>()
@@ -25,7 +24,7 @@ abstract class Effect {
 //    protected var effectParameters = HashMap<String, ShaderParameter>()
 //    protected var textureParameters = HashMap<String, ShaderParameter>()
 
-    open protected fun onCreate() {
+    protected open fun onCreate() {
         program = ShaderHelper.buildProgram(getVertexShader(), getFragmentShader())
         initParametersLocationAndTexture()
     }
@@ -42,20 +41,15 @@ abstract class Effect {
     private fun initParametersLocationAndTexture() {
         for ((key, value) in parameters) {
             when (value.type) {
-                ShaderParameter.TYPE_UNIFORM -> value.initUniformLocation(this.program)
-                ShaderParameter.TYPE_TEXTURE -> {
-                    value.initUniformLocation(this.program)
-//                    if (value.value is Bitmap) {
-//                        setTextureParameter(key, value.value as Bitmap)
-//                    }
-                }
-                ShaderParameter.TYPE_ATTRIBUTE -> value.initAttributeLocation(this.program)
+                ShaderParameter2.TYPE_UNIFORM -> value.initUniformLocation(this.program)
+                ShaderParameter2.TYPE_TEXTURE -> value.initUniformLocation(this.program)
+                ShaderParameter2.TYPE_ATTRIBUTE -> value.initAttributeLocation(this.program)
             }
         }
     }
 
     protected fun addParameter(name: String, value: Any?, type: Int) {
-        parameters[name] = ShaderParameter(name, type)
+        parameters[name] = ShaderParameter2(name, type)
         parameters[name]!!.value = value
     }
 
@@ -82,7 +76,7 @@ abstract class Effect {
         return GLES20.GL_TEXTURE_2D
     }
 
-    public fun setSize(width: Int, height: Int) {
+    fun setSize(width: Int, height: Int) {
         this.width = width
         this.height = height
     }
@@ -136,15 +130,19 @@ abstract class Effect {
         GLES20.glUniformMatrix4fv(getLocation(name), 1, false, floatArray, 0)
     }
 
-    protected fun setUniformTexture(name: String, textureTarget: Int) {
+    // 外面可以直接设置bitmap， 但最终这里都会转成Texture
+    open fun setUniformTexture(name: String, textureTarget: Int) {
         val value = getValue(name)
-        if (value is Bitmap) {
-            val texture = IntArray(1)
-            TextureHelper.createTexture(value, texture)
-            parameters[name]?.value = texture[0]
+        if (value is Bitmap ) {
+            val texture = ImageTexture(value)
+            texture.prepareToDraw()
+            parameters[name]?.value = texture
+        } else if (value is Texture ){
+            (value as ImageTexture).prepareToDraw()
         }
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0 + textureTarget)
-        GLES20.glBindTexture(getTarget(), getValue(name) as Int)
+        GLES20.glBindTexture(getTarget(),  (parameters[name]?.value as Texture).textureId)
+        LogUtil.e("lammy-tex .............${ (parameters[name]?.value as Texture).textureId}")
         GLES20.glUniform1i(getLocation(name), textureTarget)
     }
 

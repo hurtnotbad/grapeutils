@@ -6,7 +6,6 @@ import com.lammy.grapeutils.effet.base.GrapeEffect
 import com.lammy.grapeutils.log.LogUtil
 import com.lammy.grapeutils.permission.PermissionActivity
 import com.lammy.grapeutils.test.animation.TranslateAnimationRenderTest
-import com.lammy.grapeutils.test.filter.FilterRenderTest
 
 class MainActivity : PermissionActivity() {
 
@@ -19,8 +18,6 @@ class MainActivity : PermissionActivity() {
 //        val render = FilterRenderTest(glSurfaceView)
         val render = TranslateAnimationRenderTest(glSurfaceView)
         render.render()
-
-
     }
 
     override fun onDonePermissionGranted() {

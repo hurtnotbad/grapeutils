@@ -4,7 +4,7 @@ import android.graphics.SurfaceTexture
 import android.opengl.GLES11Ext
 import com.lammy.effect.glutils.BufferUtil
 import com.lammy.grapeutils.effet.common.ShaderConstant
-import com.lammy.grapeutils.effet.common.ShaderParameter
+import com.lammy.grapeutils.effet.common.ShaderParameter2
 import com.lammy.grapeutils.effet.glHelper.TextureHelper
 import com.lammy.grapeutils.log.LogUtil
 import java.nio.FloatBuffer
@@ -54,9 +54,9 @@ class CameraFilter : Filter() {
     }
 
     override fun initParameters() {
-        addParameter(positionsString, ShaderConstant.POSITIONS!!, ShaderParameter.TYPE_ATTRIBUTE)
-        addParameter(textureCoorString, null, ShaderParameter.TYPE_ATTRIBUTE)
-        addParameter(inTextureString, ShaderConstant.INVALID_PARAMETER_LOCATION, ShaderParameter.TYPE_TEXTURE)
+        addParameter(positionsString, ShaderConstant.POSITIONS!!, ShaderParameter2.TYPE_ATTRIBUTE)
+        addParameter(textureCoorString, null, ShaderParameter2.TYPE_ATTRIBUTE)
+        addParameter(inTextureString, ShaderConstant.INVALID_PARAMETER_LOCATION, ShaderParameter2.TYPE_TEXTURE)
 
     }
 
@@ -94,7 +94,6 @@ class CameraFilter : Filter() {
     override fun draw() {
         surfaceTexture.updateTexImage()
         super.draw()
-        printParameter(javaClass.simpleName)
     }
 
 
@@ -106,14 +105,6 @@ class CameraFilter : Filter() {
          parameters[inTextureString]?.value = oesTexture[0]
          surfaceTexture1
      }
-
-
-//     fun getSurfaceTexture():SurfaceTexture {
-//        TextureHelper.createOESTexture(oesTexture)
-//        surfaceTexture = SurfaceTexture(oesTexture[0])
-//        parameters[inTextureString]?.value = oesTexture[0]
-//         return surfaceTexture
-//    }
 
 
 }

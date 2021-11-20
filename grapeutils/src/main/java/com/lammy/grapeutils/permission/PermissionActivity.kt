@@ -1,11 +1,13 @@
 package com.lammy.grapeutils.permission
 
 import android.Manifest
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.lammy.grapeutils.effet.glutils.ContextUtil
 import com.lammy.grapeutils.log.LogUtil
 
 abstract class PermissionActivity : AppCompatActivity() {
@@ -22,6 +24,7 @@ abstract class PermissionActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ContextUtil.globalContext = applicationContext
         requestPermissions()
     }
 

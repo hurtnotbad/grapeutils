@@ -15,11 +15,10 @@ class CameraRenderer (glSurfaceView1: GLSurfaceView): BasicRenderer(glSurfaceVie
     private lateinit var cameraFilter: CameraFilter
     lateinit var showFilter:Filter
     lateinit var grayFilter:Filter
-    private lateinit var filterQueue: FilterQueue;
+    private lateinit var filterQueue: FilterQueue
 
     override fun onDrawFrame(gl: GL10?) {
         filterQueue.draw()
-        showFilter.setParameter(Filter.inTextureString, filterQueue.getOutTexture())
         showFilter.draw()
     }
 
@@ -32,8 +31,6 @@ class CameraRenderer (glSurfaceView1: GLSurfaceView): BasicRenderer(glSurfaceVie
 
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
         cameraFilter =  CameraFilter()
-        showFilter = NoFilter()
-        grayFilter =  GrayFilter()
         cameraInterface.setSurfaceTexture(cameraFilter.surfaceTexture)
         cameraFilter.setCameraId("0")
         cameraInterface.openCamera()

@@ -1,23 +1,16 @@
 package com.lammy.grapeutils.effet.filter
 
-import android.graphics.BitmapFactory
-import com.lammy.grapeutils.effet.base.GrapeEffect
-import com.lammy.grapeutils.effet.common.ShaderConstant
-import com.lammy.grapeutils.effet.common.ShaderParameter
+import android.provider.Settings
+import com.lammy.effect.glutils.BufferUtil
+import com.lammy.grapeutils.effet.common.*
+import com.lammy.grapeutils.utils.AssetsUtil
 
 
-class LutTableFilter: Filter() {
+class LutTableFilter: LYFilter() {
 
-    init {
-        initParameters()
-    }
 
-    override fun getVertexShader(): String {
-        return ShaderConstant.SHOW_FILTER_VERTEX_SHADER
-    }
-
-    override fun getFragmentShader(): String {
-        return """varying highp vec2 textureCoordinate;
+    override var vertexShader = ShaderConstant.SHOW_FILTER_VERTEX_SHADER
+    override var fragmentShader = """varying highp vec2 textureCoordinate;
                 uniform sampler2D vTexture;
                 uniform sampler2D lutTexture;
                 uniform highp float intensity;
@@ -44,23 +37,47 @@ class LutTableFilter: Filter() {
                     lowp vec4 newColor = mix(newColor1, newColor2, fract(blueColor));
                     gl_FragColor = mix(textureColor, vec4(newColor.rgb, textureColor.w), intensity);
                 }"""
+
+    override fun addParameters() {
+        parameters["vPosition"] = ShaderParameter(
+            "vPosition",
+            ShaderParameter.TYPE_ATTRIBUTE,
+            ShaderParameter.VALUE_TYPE_ATTRIBUTE_PARAMETER
+        )
+        parameters["inputTextureCoordinate"] = ShaderParameter(
+            "inputTextureCoordinate",
+            ShaderParameter.TYPE_ATTRIBUTE,
+            ShaderParameter.VALUE_TYPE_ATTRIBUTE_PARAMETER
+        )
+        parameters["vTexture"] = ShaderParameter(
+            "vTexture",
+            ShaderParameter.TYPE_TEXTURE,
+            ShaderParameter.VALUE_TYPE_IMAGE_TEXTURE
+        )
+        parameters["lutTexture"] = ShaderParameter(
+            "lutTexture",
+            ShaderParameter.TYPE_TEXTURE,
+            ShaderParameter.VALUE_TYPE_IMAGE_TEXTURE
+        )
+        parameters["intensity"] = ShaderParameter(
+            "intensity",
+            ShaderParameter.TYPE_UNIFORM,
+            ShaderParameter.VALUE_TYPE_FLOAT
+        )
     }
-    companion object{
-        const val lut = "lutTexture"
-        const val intensity = "intensity"
+   override  fun setInTexture(texture: Texture){
+        parameters["vTexture"]?.value = texture
     }
 
-    override fun initParameters() {
-        super.initParameters()
-        val lutImage = BitmapFactory.decodeStream(GrapeEffect.grapeContext.assets.open("highkey.png"))
-        addParameter(lut,lutImage, ShaderParameter.TYPE_TEXTURE)
-        addParameter(intensity,0.8f, ShaderParameter.TYPE_UNIFORM)
+    override fun getInTexture(): Texture{
+        return parameters["vTexture"]?.value as Texture
     }
 
-    override fun setParameters() {
-        super.setParameters()
-        setUniform1f(intensity)
-        setUniformTexture(lut,1)
+    override fun setDefaultParameterValues() {
+        parameters["vPosition"]?.value = ShaderParameter.AttributeParameter(ShaderConstant.POSITIONS, 2)
+        parameters["inputTextureCoordinate"]?.value = ShaderParameter.AttributeParameter(ShaderConstant.COORDINATE, 2)
+        parameters["vTexture"]?.value =  AssetsUtil.testInTexture
+        parameters["lutTexture"]?.value = ImageTexture(AssetsUtil.getBitmapFormAssets("highkey.png"), 1)
+        parameters["intensity"]?.value = 0.8f
     }
-
 }

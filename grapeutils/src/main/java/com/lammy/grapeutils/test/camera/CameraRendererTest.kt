@@ -15,28 +15,21 @@ class CameraRendererTest (glSurfaceView1: GLSurfaceView): BasicRenderer(glSurfac
     private lateinit var cameraFilter: CameraFilter
     lateinit var showFilter:Filter
     lateinit var grayFilter:Filter
-    private lateinit var filterQueue: FilterQueue;
+    private lateinit var filterQueue: FilterQueue
 
     override fun onDrawFrame(gl: GL10?) {
-        filterQueue.draw()
-        showFilter.setParameter(Filter.inTextureString, filterQueue.getOutTexture())
-        showFilter.draw()
-    }
-
-    override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
-        super.onSurfaceChanged(gl, width, height)
-        filterQueue  = FilterQueue(width, height)
-        filterQueue.addFilter(cameraFilter)
-        filterQueue.addFilter(grayFilter)
+//        filterQueue.draw()
+//        showFilter.setParameter(Filter.inTextureString, filterQueue.getOutTexture())
+//        showFilter.draw()
     }
 
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
-        cameraFilter =  CameraFilter()
-        showFilter = NoFilter()
-        grayFilter =  GrayFilter()
-        cameraInterface.setSurfaceTexture(cameraFilter.surfaceTexture)
-        cameraFilter.setCameraId("0")
-        cameraInterface.openCamera()
+//        cameraFilter =  CameraFilter()
+//        showFilter = NoFilter()
+//        grayFilter =  GrayFilter()
+//        cameraInterface.setSurfaceTexture(cameraFilter.surfaceTexture)
+//        cameraFilter.setCameraId("0")
+//        cameraInterface.openCamera()
     }
 
 }

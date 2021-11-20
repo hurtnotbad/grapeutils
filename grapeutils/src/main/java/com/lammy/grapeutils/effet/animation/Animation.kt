@@ -4,7 +4,7 @@ import android.opengl.GLES20
 import com.lammy.effect.glutils.Matrix2DUtils
 import com.lammy.grapeutils.effet.base.Effect
 import com.lammy.grapeutils.effet.common.ShaderConstant
-import com.lammy.grapeutils.effet.common.ShaderParameter
+import com.lammy.grapeutils.effet.common.ShaderParameter2
 
 /***
  * 构建基本的Animation类，后续继承，只需要设置参数即可，可参考 showFilter 和 LutTableFilter
@@ -24,15 +24,15 @@ abstract class Animation : Effect() {
 
     /*在init方法中调用*/
     override fun initParameters() {
-        addParameter(positionsString, ShaderConstant.POSITIONS!!, ShaderParameter.TYPE_ATTRIBUTE)
-        addParameter(textureCoorString, ShaderConstant.COORDINATE!!, ShaderParameter.TYPE_ATTRIBUTE)
-        addParameter(inTexture, ShaderConstant.INVALID_TEXTURE, ShaderParameter.TYPE_TEXTURE)
-        addParameter(matrixString, Matrix2DUtils.getIdentityMatrix(), ShaderParameter.TYPE_TEXTURE)
-        addParameter(duration, defaultDuration, ShaderParameter.TYPE_NOT_SHADER)
+        addParameter(positionsString, ShaderConstant.POSITIONS!!, ShaderParameter2.TYPE_ATTRIBUTE)
+        addParameter(textureCoorString, ShaderConstant.COORDINATE!!, ShaderParameter2.TYPE_ATTRIBUTE)
+        addParameter(inTexture, ShaderConstant.INVALID_TEXTURE, ShaderParameter2.TYPE_TEXTURE)
+        addParameter(matrixString, Matrix2DUtils.getIdentityMatrix(), ShaderParameter2.TYPE_TEXTURE)
+        addParameter(duration, defaultDuration, ShaderParameter2.TYPE_NOT_SHADER)
     }
 
     override fun setParameters() {
-        updateParameters()
+        updateAnimationParameters()
         setAttribute(positionsString, 2)
         setAttribute(textureCoorString, 2)
         setUniformTexture(inTexture, 0)
@@ -49,7 +49,7 @@ abstract class Animation : Effect() {
         }
     }
 
-    protected open fun updateParameters() {}
+    protected open fun updateAnimationParameters() {}
 
     override fun getTarget(): Int {
         return GLES20.GL_TEXTURE_2D

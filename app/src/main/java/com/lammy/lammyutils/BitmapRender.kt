@@ -18,24 +18,24 @@ class BitmapRender(glSurfaceView1: GLSurfaceView): BasicRenderer(glSurfaceView1)
     private lateinit var filter: Filter
     private lateinit var showFilter:Filter
     override fun onDrawFrame(gl: GL10?) {
-        LogUtil.e("onDrawFrame ....." )
-        filterQueue.draw()
-        showFilter.setParameter(Filter.inTextureString, filterQueue.getOutTexture())
-        showFilter.draw()
+//        LogUtil.e("onDrawFrame ....." )
+//        filterQueue.draw()
+//        showFilter.setParameter(Filter.inTextureString, filterQueue.getOutTexture())
+//        showFilter.draw()
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
-        super.onSurfaceChanged(gl, width, height)
-        filterQueue = FilterQueue(width, height)
-        filterQueue.addFilter(filter)
+//        super.onSurfaceChanged(gl, width, height)
+//        filterQueue = FilterQueue(width, height)
+//        filterQueue.addFilter(filter)
     }
 
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
-        LogUtil.e("onSurfaceCreated .....")
-        val bitmap = BitmapFactory.decodeStream(glSurfaceView.context.assets.open("test.jpg"))
-        filter = GrayFilter()
-        showFilter = ShowFilter()
-        filter.setParameter(ShaderConstant.INPUT_TEXTURE_UNIFORM_STRING,bitmap )
+//        LogUtil.e("onSurfaceCreated .....")
+//        val bitmap = BitmapFactory.decodeStream(glSurfaceView.context.assets.open("test.jpg"))
+//        filter = GrayFilter()
+//        showFilter = ShowFilter()
+//        filter.setParameter(ShaderConstant.INPUT_TEXTURE_UNIFORM_STRING,bitmap )
     }
 
 

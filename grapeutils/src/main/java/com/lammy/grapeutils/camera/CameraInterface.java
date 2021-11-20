@@ -66,7 +66,7 @@ public class CameraInterface {
         StreamConfigurationMap map = mCameraCharacteristics.get(CameraCharacteristics
                 .SCALER_STREAM_CONFIGURATION_MAP);
         //获取相机支持的size
-        Size size[] =  map.getOutputSizes(ImageFormat.JPEG);
+        Size[] size =  map.getOutputSizes(ImageFormat.JPEG);
         previewSize = size[0];
 //        LogUtil.e("onSurfaceChanged cameraWidth0 = " + previewSize.getWidth());
 //        LogUtil.e("onSurfaceChanged cameraHeight0= " + previewSize.getHeight());
@@ -97,7 +97,7 @@ public class CameraInterface {
                         StreamConfigurationMap map = mCameraCharacteristics.get(CameraCharacteristics
                                 .SCALER_STREAM_CONFIGURATION_MAP);
                         //获取相机支持的size
-                        Size size[] =  map.getOutputSizes(ImageFormat.JPEG);
+                        Size[] size =  map.getOutputSizes(ImageFormat.JPEG);
                         previewSize = size[0];
                         surfaceTexture.setDefaultBufferSize(previewSize.getWidth() , previewSize.getHeight());
                         Surface surface = new Surface(surfaceTexture);
@@ -216,6 +216,9 @@ public class CameraInterface {
     public String getCameraId(){
         return cameraID;
     }
+    public void setCameraId(String id){
+        cameraID = id;
+    }
 
     public void changeCamera(){
         if(cameraID.equals("1")){
@@ -236,7 +239,7 @@ public class CameraInterface {
         StreamConfigurationMap map = mCameraCharacteristics.get(CameraCharacteristics
                 .SCALER_STREAM_CONFIGURATION_MAP);
         //获取相机支持的size
-        Size size[] =  map.getOutputSizes(ImageFormat.JPEG);
+        Size[] size =  map.getOutputSizes(ImageFormat.JPEG);
 
         int cameraWidth = size[0].getWidth();
         int cameraHeight = size[0].getHeight();
@@ -275,7 +278,7 @@ public class CameraInterface {
         StreamConfigurationMap map = mCameraCharacteristics.get(CameraCharacteristics
                 .SCALER_STREAM_CONFIGURATION_MAP);
         //获取相机支持的size
-        Size size[] =  map.getOutputSizes(ImageFormat.JPEG);
+        Size[] size =  map.getOutputSizes(ImageFormat.JPEG);
 
         int cameraWidth = size[0].getWidth();
         int cameraHeight = size[0].getHeight();
